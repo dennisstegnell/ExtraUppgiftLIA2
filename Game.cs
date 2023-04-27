@@ -39,7 +39,8 @@ namespace ExtraUppgiftLIA2
         }
         void playGame(int difficulty)
         {
-            double maxGuess = Math.Pow(10, difficulty);
+            double maxGuess = Math.Pow(10, difficulty)+1;
+            int minGuess = 0;
             
             Random random = new Random();
             int correctNumber = random.Next(1, (int)maxGuess + 1);
@@ -54,15 +55,22 @@ namespace ExtraUppgiftLIA2
 
                 do 
                 {
-                    Console.WriteLine($"Gissa på ett tal mellan 1-{maxGuess}");
-                    userGuess = validateUserGuess(maxGuess);
+                    Console.WriteLine($"Gissa på ett tal mellan {minGuess+1}-{maxGuess-1}");
+                    userGuess = validateUserGuess(minGuess, maxGuess);
                 }
                 while (userGuess == 0) ;
 
                 if (userGuess < correctNumber)
+                {
                     Console.WriteLine("Din gissning är för låg");
+                    minGuess = userGuess;
+
+                }
                 else if(userGuess > correctNumber)
+                {
                     Console.WriteLine("Din gissning är för hög");
+                    maxGuess = userGuess;
+                }
 
 
             }
@@ -71,16 +79,16 @@ namespace ExtraUppgiftLIA2
 
         }
 
-        private int validateUserGuess(double max)
+        private int validateUserGuess(int min, double max)
         {
             
             try
             {
                 int guess = Convert.ToInt32(Console.ReadLine());
-                if (guess < 1 || guess > max)
+                if (guess <= min || guess >= max)
                 {
                    
-                    Console.WriteLine($"Du har valt nummer {guess}, välj mellan 1-{max} tack!");
+                    Console.WriteLine($"Du har valt nummer {guess}, välj mellan {min+1}-{max-1} tack!");
                     return 0;
                 }
                 return guess;
